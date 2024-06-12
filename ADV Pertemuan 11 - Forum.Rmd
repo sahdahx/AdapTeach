@@ -1,0 +1,74 @@
+---
+title: "Tugas Pertemuan 11: Manipulasi Data"
+author: Sahda Huwaidah Estiningtyas
+date: "`30 Mei 2024`"
+output: word_document
+---
+
+**Soal 7-20** menggunakan data msleep.csv.
+```
+> dat <- read.csv(file="C:/data/msleep.csv")
+> dat <- as_tibble(dat)
+> glimpse(dat)
+Observations: 83
+Variables: 11
+$ name         <fct> Cheetah, Owl monkey, Mountain beaver, Greate...
+$ genus        <fct> Acinonyx, Aotus, Aplodontia, Blarina, Bos, B...
+$ vore         <fct> carni, omni, herbi, omni, herbi, herbi, carn...
+$ order        <fct> Carnivora, Primates, Rodentia, Soricomorpha,...
+$ conservation <fct> lc, NA, nt, lc, domesticated, NA, vu, NA, do...
+$ sleep_total  <dbl> 12.1, 17.0, 14.4, 14.9, 4.0, 14.4, 8.7, 7.0,...
+$ sleep_rem    <dbl> NA, 1.8, 2.4, 2.3, 0.7, 2.2, 1.4, NA, 2.9, N...
+$ sleep_cycle  <dbl> NA, NA, NA, 0.1333333, 0.6666667, 0.7666667,...
+$ awake        <dbl> 11.9, 7.0, 9.6, 9.1, 20.0, 9.6, 15.3, 17.0, ...
+$ brainwt      <dbl> NA, 0.01550, NA, 0.00029, 0.42300, NA, NA, N...
+$ bodywt       <dbl> 50.000, 0.480, 1.350, 0.019, 600.000, 3.850,...
+```
+
+#### 11.	Susun data yang terdiri dari name, order, sleep_total dalam urutan naik berdasarkan kolom order dan sleep_total dan filter untuk sleep_total >= 10. Lalu tampilkan 3 pengamatan pertama.
+```{r}
+library(dplyr)
+# Memanggil data
+sleep <- read.csv("C:/Users/LENOVO/OneDrive/Documents/UNY/Semester 2/msleep.csv")
+head(sleep)
+
+# Menyusun data
+result <- sleep %>% 
+  select(name, order, sleep_total) %>% 
+  arrange(order, sleep_total) %>% 
+  filter(sleep_total >= 10)
+
+head(result, n = 3)
+```
+
+#### 12.	Buat variabel baru rem_proportion yang didefinisikan sebagai sleep_rem dibagi dengan sleep_total lalu tambahkan pada data. Lalu tampilkan 3 pengamatan pertama.
+```{r}
+result <- sleep %>% 
+  mutate(rem_proportion = sleep_rem / sleep_total)
+
+head(result, n = 3)
+```
+
+#### 13.	Buat variabel baru rem_proportion yang didefinisikan sebagai sleep_rem dibagi dengan sleep_total dan bodywt_grams yang didefinisikan sebagai bodywt * 1000 lalu tambahkan pada data. Lalu tampilkan 3 pengamatan pertama.
+```{r}
+result <- sleep %>% 
+  mutate(rem_proportion = sleep_rem / sleep_total,
+         bodywt_grams = bodywt * 1000)
+
+head(result, n = 3)
+```
+
+#### 14.	Buat ringkasan statistik rata-rata, simpangan baku, minimum, maksimum dan total dari sleep_total berdasarkan grup order. 
+```{r}
+summary_stats <- sleep %>% 
+  group_by(order) %>% 
+  summarise(
+    avg = mean(sleep_total, na.rm = TRUE), 
+    min = min(sleep_total, na.rm = TRUE), 
+    max = max(sleep_total, na.rm = TRUE), 
+    sd = sd(sleep_total, na.rm = TRUE), 
+    total = n()
+  )
+
+print(summary_stats)
+```

@@ -1,0 +1,38 @@
+---
+title: "Regresi Linear Sederhana"
+author: "Sahda Huwaidah Estiningtyas"
+output: html_document
+date: '2024-04-18'
+---
+
+# Membaca Data
+```{r}
+# Membaca data
+civillabor <- read.table("C:/Users/LENOVO/OneDrive/Documents/UNY/Semester 2/civil_labor.txt", header = TRUE)
+
+# Menampilkan struktur data
+str(civillabor)
+
+# Memeriksa data
+head(civillabor)
+```
+
+# Eksplorasi Data
+```{r}
+summary(civillabor)
+
+plot(civillabor$population, civillabor$civil_labor, xlab="Population", ylab="Civil Labor",pch=16)
+```
+
+# Persamaan Regresi
+```{r}
+modela<-lm(civil_labor~population,data=civillabor)
+summary(modela)
+```
+
+# Asumsi 1: Rata-rata galat diasumsikan bernilai nol
+```{r}
+plot(civillabor$population, modela$Residuals, 
+ xlab="Population (X)", ylab="Residuals", 
+ main="Plot Uji Asumsi Rata-rata Galat bernilai nol")
+```

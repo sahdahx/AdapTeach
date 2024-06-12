@@ -1,0 +1,147 @@
+---
+title: "Pemilihan Model dengan Seleksi Metode Backward"
+author: "NID"
+date: "2024-05-18"
+output: html_document
+---
+
+```{r}
+datasets::mtcars
+```
+
+```{r}
+str(mtcars)
+```
+
+
+# Pemilihan Model dengan Metode Seleksi Mundur (Backward)
+# Metode Backward dengan Manual
+
+## Model Regresi dengan semua variabel independen
+```{r}
+model1<-lm(mpg~.,data=mtcars) #model dengan seluruh var independen
+summary(model1)
+```
+```{r}
+anova(model1)
+```
+
+## Penyeleksian variabel independen pertama
+```{r}
+model1<-lm(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb,data=mtcars)
+anova(model1)
+```
+```{r}
+model2<-lm(mpg~carb+cyl+disp+hp+drat+wt+qsec+vs+am+gear,data=mtcars)
+anova(model2)
+```
+```{r}
+model3<-lm(mpg~carb+gear+cyl+disp+hp+drat+wt+qsec+vs+am,data=mtcars)
+anova(model3)
+```
+```{r}
+model4<-lm(mpg~carb+gear+am+cyl+disp+hp+drat+wt+qsec+vs,data=mtcars)
+anova(model4)
+```
+
+```{r}
+model5<-lm(mpg~carb+gear+am+vs+cyl+disp+hp+drat+wt+qsec,data=mtcars)
+anova(model5)
+```
+```{r}
+model6<-lm(mpg~carb+gear+am+vs+qsec+cyl+disp+hp+drat+wt,data=mtcars)
+anova(model6)
+```
+```{r}
+model7<-lm(mpg~carb+gear+am+vs+qsec+wt+cyl+disp+hp+drat,data=mtcars)
+anova(model7)
+```
+```{r}
+model8<-lm(mpg~carb+gear+am+vs+qsec+wt+drat+cyl+disp+hp,data=mtcars)
+anova(model8)
+```
+```{r}
+model9<-lm(mpg~carb+gear+am+vs+qsec+wt+drat+hp+cyl+disp,data=mtcars)
+anova(model9)
+```
+```{r}
+model10<-lm(mpg~carb+gear+am+vs+qsec+wt+drat+hp+disp+cyl,data=mtcars)
+anova(model10)
+```
+
+## Penyeleksian kembali variabel independen berikutnya
+```{r}
+model.11<-lm(mpg~disp+hp+drat+wt+qsec+vs+am+gear+carb,data=mtcars) 
+anova(model.11)
+```
+
+```{r}
+model.12<-lm(mpg~carb+disp+hp+drat+wt+qsec+vs+am+gear,data=mtcars) 
+anova(model.12)
+```
+
+```{r}
+model.13<-lm(mpg~carb+gear+disp+hp+drat+wt+qsec+vs+am,data=mtcars)
+anova(model.13)
+```
+
+```{r}
+model.14<-lm(mpg~carb+gear+am+disp+hp+drat+wt+qsec+vs,data=mtcars)
+anova(model.14)
+```
+
+```{r}
+model.15<-lm(mpg~carb+gear+am++vs+disp+hp+drat+wt+qsec,data=mtcars)
+anova(model.15)
+```
+```{r}
+model.16<-lm(mpg~carb+gear+am+vs+qsec+disp+hp+drat+wt,data=mtcars)
+anova(model.16)
+```
+```{r}
+model.17<-lm(mpg~carb+gear+am+vs+qsec+wt+disp+hp+drat,data=mtcars)
+anova(model.17)
+```
+```{r}
+model.18<-lm(mpg~carb+gear+am+vs+qsec+wt+drat+disp+hp,data=mtcars)
+anova(model.18)
+```
+```{r}
+model.19<-lm(mpg~carb+gear+am+vs+qsec+wt+drat+hp+disp,data=mtcars)
+anova(model.19)
+```
+
+
+
+
+
+# Metode Backward dengan fungsi R
+
+```{r}
+library(leaps)
+bs <- regsubsets(mpg ~ ., data=mtcars, nvmax = 10, method = "backward") #nvmax jumlah varindependen
+hasil<-summary(bs)
+```
+
+```{r}
+which.min(hasil$cp)#nilai yang muncul menunjukkan model terbaik dengan nilai Cp terendah terdiri dari berapa variabel
+```
+
+```{r}
+which.min(hasil$bic)# model terbaik dengan nilai BIC terendah
+```
+
+```{r}
+which.max(hasil$adjr2)#model terbaik dengan nilai R2 tertinggi
+```
+
+```{r}
+coef(bs,3) #3 adalah jumlah variabel yang dipilih berdasarkan ukuran kebaikan model yang dipilih
+```
+Berdasarkan Hasil di atas dapat disimpulkan bahwa model terbaiknya adalah:
+mpg = 9.618 - 3.916 + 1.226 + 2.936
+
+di mana 
+= wt
+= qsec
+= am 

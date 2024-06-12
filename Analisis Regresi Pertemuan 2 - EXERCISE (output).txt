@@ -1,0 +1,120 @@
+> # Reading data
+> tugas_data <- read.csv("C:/Users/LENOVO/OneDrive/Documents/Learning R/Semester 2/data_tugas.csv")
+> head(tugas_data)
+  Height Weight
+1   1.47  52.21
+2   1.50  53.12
+3   1.52  54.48
+4   1.55  55.84
+5   1.57  57.20
+6   1.60  58.57
+> # Create a regression equation
+> model2<-lm(Height~Weight, data=tugas_data)
+> # Interpret Regression Equation
+> summary(model2)
+
+Call:
+lm(formula = Height ~ Weight, data = tugas_data)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.021355 -0.007024  0.002112  0.011106  0.014011 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 0.6484604  0.0292218   22.19 1.02e-11 ***
+Weight      0.0161443  0.0004679   34.50 3.60e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.01232 on 13 degrees of freedom
+Multiple R-squared:  0.9892,	Adjusted R-squared:  0.9884 
+F-statistic:  1190 on 1 and 13 DF,  p-value: 3.604e-14
+
+> # Determination Coefficient 
+> JKG<-sum((tugas_data$Weight-model2$fitted.values)^2)
+> JKG
+[1] 55443.1
+> JKR<-sum(((model2$fitted.values-mean(tugas_data$Weight))^2))
+> JKR
+[1] 54772.12
+> JKT<-sum((tugas_data$Weight-mean(tugas_data$Weight))^2)
+> JKT
+[1] 693.3726
+> r_squared <- cor(tugas_data$Height, model2$fitted.values)^2
+> cat("Determination Coefficient (R-squared):", r_squared, "\n")
+Determination Coefficient (R-squared): 0.9891969 
+> # Correlation Coefficient
+> r_sqr<-(JKT-JKG)/JKT
+> r_sqr
+[1] -78.96148
+> cor_coefficient <- cor(tugas_data$Height, tugas_data$Weight)
+> cat("Correlation Coefficient:", cor_coefficient, "\n")
+Correlation Coefficient: 0.9945838 
+> # Hypothesis testing for correlation
+> hypothesis_result <- cor.test(tugas_data$Height, tugas_data$Weight, method = "pearson")
+> print(hypothesis_result)
+
+	Pearson's product-moment correlation
+
+data:  tugas_data$Height and tugas_data$Weight
+t = 34.502, df = 13, p-value = 3.604e-14
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.9833017 0.9982499
+sample estimates:
+      cor 
+0.9945838 
+
+> # Menentukan signifikansi pada tingkat alpha tertentu (misalnya, 0.05)
+> p <- hypothesis_result$p.value
+> cat("p value:", p, "\n")
+p value: 3.603515e-14 
+> # Kesimpulan
+> alpha <- 0.05
+> if (p > alpha) {
++   cat("p-value lebih dari taraf signifikansi 0.05 maka uji hipotesis diterima", alpha, ".\n")
++ } else {
++   cat("p-value kurang dari taraf signifikansi 0.05 maka uji hipotesis ditolak", alpha, ".\n")
++ }
+p-value kurang dari taraf signifikansi 0.05 maka uji hipotesis ditolak 0.05 .
+> # PPT P2-Anreg: susun tabel ANOVA, kemudian hitung koefisien determinasi dan koefisien korelasi dari data berikut, dan jelaskan dan lakukan pengujian
+> # Membuat data frame
+> X <- c(71, 64, 43, 67, 56, 73, 68, 56, 76, 65, 45, 58, 45, 53, 49, 78)
+> Y <- c(82, 91, 100, 68, 87, 73, 78, 80, 65, 84, 116, 76, 97, 100, 105, 77)
+> data <- data.frame(X, Y)
+> data
+    X   Y
+1  71  82
+2  64  91
+3  43 100
+4  67  68
+5  56  87
+6  73  73
+7  68  78
+8  56  80
+9  76  65
+10 65  84
+11 45 116
+12 58  76
+13 45  97
+14 53 100
+15 49 105
+16 78  77
+> # Melakukan analisis ANOVA
+> anova_result <- aov(Y ~ X, data = data)
+> summary(anova_result)
+            Df Sum Sq Mean Sq F value   Pr(>F)    
+X            1 2059.8  2059.8   29.59 8.72e-05 ***
+Residuals   14  974.7    69.6                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> # Menghitung koefisien determinasi
+> correlation_matrix <- cor(data)
+> r_squared <- correlation_matrix[1, 2]^2
+> cat("Koefisien Determinasi (R-squared):", r_squared, "\n")
+Koefisien Determinasi (R-squared): 0.6788017 
+> # Menghitung koefisien korelasi
+> cor_coefficient <- cor(data$X, data$Y)
+> cat("Koefisien Korelasi:", cor_coefficient, "\n")
+Koefisien Korelasi: -0.8238943 

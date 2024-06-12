@@ -1,0 +1,13 @@
+educational_attainment    years_of_experience    teaching_hours_per_week    student_teacher_ratio    school_rating    salary
+Bachelor's                5                      25                         20                        8                40000
+Master's                  10                     30                         18                        10               50000
+PhD                       15                     20                         15                        12               60000
+Bachelor's                3                      22                         25                        7                35000
+Master's                  8                      28                         17                        9                48000
+PhD                       12                     24                         16                        11               55000
+Bachelor's                4                      23                         24                        6                38000
+Master's                  9                      29                         19                        8                52000
+PhD                       14                     21                         14                        10               58000
+Bachelor's                6                      26                         23                        9                42000
+Master's                  11                     31                         21                        11               53000
+PhD                       16                     27                         13                        12               62000

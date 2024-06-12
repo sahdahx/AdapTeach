@@ -1,0 +1,506 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Tugas Pertemuan 12: Pemilihan Model Regresi Terbaik},
+  pdfauthor={Sahda Huwaidah Estiningtyas},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Tugas Pertemuan 12: Pemilihan Model Regresi Terbaik}
+\author{Sahda Huwaidah Estiningtyas}
+\date{\texttt{16\ Mei\ 2024}}
+
+\begin{document}
+\maketitle
+
+\subsubsection{\texorpdfstring{\textbf{Library}}{Library}}\label{library}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse) }\CommentTok{\#package untuk manipulasi data dan visualisasi data }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.5
+## v forcats   1.0.0     v stringr   1.5.1
+## v ggplot2   3.5.1     v tibble    3.2.1
+## v lubridate 1.9.3     v tidyr     1.3.1
+## v purrr     1.0.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(modelr) }\CommentTok{\#package untuk menghitung performa model regresi}
+\FunctionTok{library}\NormalTok{(broom) }\CommentTok{\# package untuk membangun data frame berisi ukuran kebaikan model regresi}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'broom'
+## 
+## The following object is masked from 'package:modelr':
+## 
+##     bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{ (leaps)}
+\FunctionTok{library}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'MASS'
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+\end{verbatim}
+
+\section{Membaca Data mtcars.xlsx}\label{membaca-data-mtcars.xlsx}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
+\NormalTok{data}\OtherTok{\textless{}{-}} \FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"C:/Users/LENOVO/OneDrive/Documents/UNY/Semester 2/mtcars.xlsx"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 12
+##   type           mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##   <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+## 1 Mazda RX4     21       6   160   110  3.9   2.62  16.5     0     1     4     4
+## 2 Mazda RX4 W~  21       6   160   110  3.9   2.88  17.0     0     1     4     4
+## 3 Datsun 710    22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
+## 4 Hornet 4 Dr~  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
+## 5 Hornet Spor~  18.7     8   360   175  3.15  3.44  17.0     0     0     3     2
+## 6 Valiant       18.1     6   225   105  2.76  3.46  20.2     1     0     3     1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## tibble [32 x 12] (S3: tbl_df/tbl/data.frame)
+##  $ type: chr [1:32] "Mazda RX4" "Mazda RX4 Wag" "Datsun 710" "Hornet 4 Drive" ...
+##  $ mpg : num [1:32] 21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num [1:32] 6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num [1:32] 160 160 108 258 360 ...
+##  $ hp  : num [1:32] 110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num [1:32] 3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num [1:32] 2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num [1:32] 16.5 17 18.6 19.4 17 ...
+##  $ vs  : num [1:32] 0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num [1:32] 1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num [1:32] 4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num [1:32] 4 4 1 1 2 1 4 2 2 4 ...
+\end{verbatim}
+
+\section{Introduction Pemilihan Model Regresi
+Terbaik}\label{introduction-pemilihan-model-regresi-terbaik}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model1}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{cyl,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model2}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{disp,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model3}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{hp,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model4}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{drat,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model5}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{wt,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model6}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{qsec,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model7}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{gear,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model8}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{carb,}\AttributeTok{data=}\NormalTok{data) }
+\NormalTok{model255}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{cyl}\SpecialCharTok{+}\NormalTok{disp}\SpecialCharTok{+}\NormalTok{hp}\SpecialCharTok{+}\NormalTok{drat}\SpecialCharTok{+}\NormalTok{wt}\SpecialCharTok{+}\NormalTok{qsec}\SpecialCharTok{+}\NormalTok{gear}\SpecialCharTok{+}\NormalTok{carb,}\AttributeTok{data=}\NormalTok{data) }
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Menghitung nilai R2, RMSE, dan
+MAPE}\label{menghitung-nilai-r2-rmse-dan-mape}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m1}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model1, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =} \FunctionTok{rmse}\NormalTok{(model1, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model1, }\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m2}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model2, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =} \FunctionTok{rmse}\NormalTok{(model2, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model2, }\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m3}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model3, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =} \FunctionTok{rmse}\NormalTok{(model3, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model3, }\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m4}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model4, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =} \FunctionTok{rmse}\NormalTok{(model4, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model4, }\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m5}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model5, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =} \FunctionTok{rmse}\NormalTok{(model5, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model5, }\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m6}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model6, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =} \FunctionTok{rmse}\NormalTok{(model6, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model6, }\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m7}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model7, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =}  \FunctionTok{rmse}\NormalTok{(model7, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model7,}\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m8}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model8, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =}  \FunctionTok{rmse}\NormalTok{(model8, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model8,}\AttributeTok{data =}\NormalTok{ data))}
+\NormalTok{m255}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{R2 =} \FunctionTok{rsquare}\NormalTok{(model255, }\AttributeTok{data =}\NormalTok{ data), }\AttributeTok{RMSE =}  \FunctionTok{rmse}\NormalTok{(model255, }\AttributeTok{data =}\NormalTok{ data),}\AttributeTok{MAE =} \FunctionTok{mae}\NormalTok{(model255,}\AttributeTok{data =}\NormalTok{ data))}
+
+\NormalTok{datam}\OtherTok{\textless{}{-}}\FunctionTok{rbind}\NormalTok{(m1,m2,m3,m4,m5,m6,m7,m8,m255)}
+\NormalTok{datam}\OtherTok{\textless{}{-}}\FunctionTok{as.data.frame}\NormalTok{(datam)}
+
+\NormalTok{list\_model}\OtherTok{\textless{}{-}}\FunctionTok{rbind}\NormalTok{(}\StringTok{"model1"}\NormalTok{,}\StringTok{"model2"}\NormalTok{,}\StringTok{"model3"}\NormalTok{,}\StringTok{"model4"}\NormalTok{,}\StringTok{"model5"}\NormalTok{,}\StringTok{"model6"}\NormalTok{,}\StringTok{"model7"}\NormalTok{,}\StringTok{"model8"}\NormalTok{,}\StringTok{"model255"}\NormalTok{)}
+
+\NormalTok{gabungan}\OtherTok{\textless{}{-}}\FunctionTok{cbind}\NormalTok{(list\_model,datam)}
+\NormalTok{gabungan}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   list_model        R2     RMSE      MAE
+## 1     model1 0.7261800 3.104101 2.399945
+## 2     model2 0.7183433 3.148207 2.605473
+## 3     model3 0.6024373 3.740297 2.907452
+## 4     model4 0.4639952 4.342978 3.351388
+## 5     model5 0.7528328 2.949163 2.340642
+## 6     model6 0.1752963 5.387066 4.181625
+## 7     model7 0.2306734 5.203058 3.920000
+## 8     model8 0.3035184 4.950603 4.217702
+## 9   model255 0.8595764 2.222918 1.732645
+\end{verbatim}
+
+\subsection{Menghitung Kriteria R2 adjusted, AIC, dan
+BIC}\label{menghitung-kriteria-r2-adjusted-aic-dan-bic}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a1}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model1) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared,  AIC, BIC)}
+
+\NormalTok{a2}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model2) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a3}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model3) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a4}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model3) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a5}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model3) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a6}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model3) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a7}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model7) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a8}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model3) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{a255}\OtherTok{\textless{}{-}}\FunctionTok{glance}\NormalTok{(model3) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(adj.r.squared, AIC, BIC)}
+
+\NormalTok{dataa}\OtherTok{\textless{}{-}}\FunctionTok{rbind}\NormalTok{(a1,a2,a3,a4,a5,a6,a7,a8,a255)}
+\NormalTok{dataa}\OtherTok{\textless{}{-}}\FunctionTok{as.data.frame}\NormalTok{(dataa)}
+
+\NormalTok{list\_modela}\OtherTok{\textless{}{-}}\FunctionTok{rbind}\NormalTok{(}\StringTok{"model1"}\NormalTok{,}\StringTok{"model2"}\NormalTok{,}\StringTok{"model3"}\NormalTok{,}\StringTok{"model4"}\NormalTok{,}\StringTok{"model5"}\NormalTok{,}\StringTok{"model6"}\NormalTok{,}\StringTok{"model7"}\NormalTok{,}\StringTok{"model8"}\NormalTok{,}\StringTok{"model255"}\NormalTok{)}
+
+\NormalTok{gabungana}\OtherTok{\textless{}{-}}\FunctionTok{cbind}\NormalTok{(list\_modela,dataa)}
+\NormalTok{gabungana}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   list_modela adj.r.squared      AIC      BIC
+## 1      model1     0.7170527 169.3064 173.7036
+## 2      model2     0.7089548 170.2094 174.6066
+## 3      model3     0.5891853 181.2386 185.6358
+## 4      model4     0.5891853 181.2386 185.6358
+## 5      model5     0.5891853 181.2386 185.6358
+## 6      model6     0.5891853 181.2386 185.6358
+## 7      model7     0.2050292 202.3638 206.7611
+## 8      model8     0.5891853 181.2386 185.6358
+## 9    model255     0.5891853 181.2386 185.6358
+\end{verbatim}
+
+\subsection{Perhitungan Manual RMSE, MAE, R2, R2 Adjusted, Cp
+Mallow}\label{perhitungan-manual-rmse-mae-r2-r2-adjusted-cp-mallow}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova}\NormalTok{(model1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: mpg
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## cyl        1 817.71  817.71  79.561 6.113e-10 ***
+## Residuals 30 308.33   10.28                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{JKG1}\OtherTok{\textless{}{-}}\FloatTok{308.33}
+\NormalTok{JKT1}\OtherTok{\textless{}{-}}\FloatTok{308.33+817.71}
+\NormalTok{KTG1}\OtherTok{\textless{}{-}}\FloatTok{10.28}
+\NormalTok{n}\OtherTok{\textless{}{-}}\FunctionTok{length}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{mpg)}
+
+\NormalTok{RMSE1 }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{mean}\NormalTok{((model1}\SpecialCharTok{$}\NormalTok{residuals)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))}
+\NormalTok{RMSE1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.104101
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MAE1 }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(}\FunctionTok{abs}\NormalTok{(model1}\SpecialCharTok{$}\NormalTok{residuals))}
+\NormalTok{MAE1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.399945
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Rsquare1}\OtherTok{\textless{}{-}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{JKG1}\SpecialCharTok{/}\NormalTok{JKT1)}
+\NormalTok{Rsquare1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.726182
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AdjRSquare1}\OtherTok{\textless{}{-}}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{((n}\DecValTok{{-}1}\NormalTok{)}\SpecialCharTok{/}\NormalTok{JKT1)}\SpecialCharTok{*}\NormalTok{KTG1 }\CommentTok{\#n adalahbanyaknya data}
+\NormalTok{AdjRSquare1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7169905
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova}\NormalTok{(model255)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: mpg
+##           Df Sum Sq Mean Sq  F value    Pr(>F)    
+## cyl        1 817.71  817.71 118.9411 1.452e-10 ***
+## disp       1  37.59   37.59   5.4683  0.028423 *  
+## hp         1   9.37    9.37   1.3631  0.254970    
+## drat       1  16.47   16.47   2.3953  0.135352    
+## wt         1  77.48   77.48  11.2693  0.002728 ** 
+## qsec       1   3.95    3.95   0.5744  0.456192    
+## gear       1   4.68    4.68   0.6808  0.417778    
+## carb       1   0.67    0.67   0.0978  0.757278    
+## Residuals 23 158.12    6.87                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{KTG255}\OtherTok{\textless{}{-}}\FloatTok{6.87}
+\NormalTok{Cp1 }\OtherTok{\textless{}{-}}\NormalTok{ JKG1}\SpecialCharTok{/}\NormalTok{KTG255 }\SpecialCharTok{+} \DecValTok{2}\SpecialCharTok{*}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{{-}}\DecValTok{20} \CommentTok{\#Cp untuk model 1 tapi aku masih bingung yg ini}
+\NormalTok{Cp1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 28.88064
+\end{verbatim}
+
+\section{Penerapan Model Regresi}\label{penerapan-model-regresi}
+
+\subsection{Pembagian Training Testing
+Data}\label{pembagian-training-testing-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{100}\NormalTok{) }\CommentTok{\# setting seed to reproduce results of random sampling}
+\NormalTok{trainingRowIndex }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(data), }\FloatTok{0.8}\SpecialCharTok{*}\FunctionTok{nrow}\NormalTok{(data)) }\CommentTok{\# row indices for training data}
+\NormalTok{trainingData }\OtherTok{\textless{}{-}}\NormalTok{ data[trainingRowIndex, ] }\CommentTok{\# model training data}
+\NormalTok{testData }\OtherTok{\textless{}{-}}\NormalTok{ data[}\SpecialCharTok{{-}}\NormalTok{trainingRowIndex, ] }\CommentTok{\# test data}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Model Regresi (data
+training)}\label{model-regresi-data-training}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lmMod }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(mpg}\SpecialCharTok{\textasciitilde{}}\NormalTok{cyl}\SpecialCharTok{+}\NormalTok{disp}\SpecialCharTok{+}\NormalTok{hp}\SpecialCharTok{+}\NormalTok{drat}\SpecialCharTok{+}\NormalTok{wt}\SpecialCharTok{+}\NormalTok{qsec}\SpecialCharTok{+}\NormalTok{gear}\SpecialCharTok{+}\NormalTok{carb, }\AttributeTok{data=}\NormalTok{trainingData) }\CommentTok{\# build the model}
+\FunctionTok{summary}\NormalTok{(lmMod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = mpg ~ cyl + disp + hp + drat + wt + qsec + gear + 
+##     carb, data = trainingData)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -2.896 -1.583 -0.337  1.224  5.951 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)
+## (Intercept) 14.26122   25.79898   0.553    0.588
+## cyl         -0.67258    1.04970  -0.641    0.531
+## disp         0.01084    0.02102   0.515    0.613
+## hp          -0.02208    0.02419  -0.913    0.375
+## drat         1.74932    1.75323   0.998    0.333
+## wt          -2.66387    2.18456  -1.219    0.240
+## qsec         0.55008    0.98761   0.557    0.585
+## gear         0.89187    1.49367   0.597    0.559
+## carb        -0.07172    0.91258  -0.079    0.938
+## 
+## Residual standard error: 2.52 on 16 degrees of freedom
+## Multiple R-squared:  0.857,  Adjusted R-squared:  0.7854 
+## F-statistic: 11.98 on 8 and 16 DF,  p-value: 1.924e-05
+\end{verbatim}
+
+\subsection{Prediksi Data Test dengan Model
+Regresi}\label{prediksi-data-test-dengan-model-regresi}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{distPred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(lmMod, testData) }\CommentTok{\# predict fat}
+
+\NormalTok{actuals\_preds }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(}\AttributeTok{actuals=}\NormalTok{testData}\SpecialCharTok{$}\NormalTok{mpg,  }\AttributeTok{predicteds=}\NormalTok{distPred)) }\CommentTok{\# make actuals\_predicteds dataframe.}
+\NormalTok{correlation\_accuracy }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(actuals\_preds)}
+\FunctionTok{head}\NormalTok{(actuals\_preds)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   actuals predicteds
+## 1    21.0   21.70822
+## 2    18.7   17.15807
+## 3    22.8   25.48568
+## 4    10.4   12.88736
+## 5    33.9   27.84219
+## 6    30.4   26.28274
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{min\_max\_accuracy }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(}\FunctionTok{apply}\NormalTok{(actuals\_preds, }\DecValTok{1}\NormalTok{, min) }\SpecialCharTok{/} \FunctionTok{apply}\NormalTok{(actuals\_preds, }\DecValTok{1}\NormalTok{, max))}\CommentTok{\#MinMaxAcuracy}
+
+\NormalTok{mape }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(}\FunctionTok{abs}\NormalTok{((actuals\_preds}\SpecialCharTok{$}\NormalTok{predicteds }\SpecialCharTok{{-}}\NormalTok{ actuals\_preds}\SpecialCharTok{$}\NormalTok{actuals))}\SpecialCharTok{/}\NormalTok{actuals\_preds}\SpecialCharTok{$}\NormalTok{actuals) }\CommentTok{\# Mean Absolute Percentage Deviation (MAPE)}
+
+\CommentTok{\# install.packages("DMwR")}
+\CommentTok{\# library(DMwR)}
+\CommentTok{\# DMwR::regr.eval(actuals\_preds$actuals,actuals\_preds$predicteds)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

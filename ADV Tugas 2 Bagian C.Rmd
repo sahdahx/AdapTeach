@@ -1,0 +1,221 @@
+---
+title: "Analisis Regresi Linier Ganda (Tugas 2 Bagian C)"
+author: "-"
+date: "`27 Maret 2024`"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+## Memanggil data
+Data yang dipilih: Delivery Time Data, from Montgomery and Peck (1982). The aim is to explain the time required to service a vending machine (Y) by means of the number of products stocked (X1) and the distance walked by the route driver (X2).
+```{r}
+delivery <- read.csv(file="C:/Users/LENOVO/OneDrive/Documents/Learning R/Semester 2/delivery.csv", head=T)
+str(delivery)
+
+delivery.complete <- delivery[complete.cases(delivery),]
+delivery.complete
+```
+
+# 1. Menganalisis regresi berganda
+### Membuat plot pencar
+```{r}
+attach(delivery.complete)
+pairs(cbind(n.prod, distance, delTime))
+```
+
+```{r}
+# ERROR 
+```
+
+Interpretasi: 
+
+- Terlihat ada hubungan linear positif antara jarak (distance) dengan waktu pengiriman (delTime) dan jumlah produk (n.prod).
+
+- Korelasi antar dua variabel prediktor (jumlah produk dan jarak) sebesar 0.82 yang tergolong moderat. Hal ini mengindikasikan tidak terjadi multikolinearitas.
+
+- Korelasi antar masing-masing variabel prediktor (jumlah produk dan jarak) dengan variabel respon (waktu pengiriman) berturut-turut sebesar 0,96 dan 0,89. Hal ini mengindikasikan adanya hubungan linear yang kuat antara masing-masing variabel prediktor dengan variabel respon. Sehingga asumsi linearitas dapat dianggap terpenuhi.
+
+### Persamaan regresi dugaan
+```{r}
+# Perhitungan menggunakan fungsi lm di program R
+mod.reg <- lm(delTime~n.prod+distance)
+summary(mod.reg)
+
+# Perhitungan secara manual di program R
+X <- cbind(1, n.prod, distance)
+Y <- delTime
+b <- solve(t(X)%*%X)%*%t(X)%*%Y
+b
+```
+
+Persamaan regresi dugaan yang dihasilkan adalah:
+
+\[
+\hat{Y} = 2.3412 + 1.6159X_1 + 0.0144X_2
+\]
+
+- **Intersep**: Nilai intersep (\(b_0\)) adalah 2.3412. Ini menunjukkan bahwa saat jumlah produk (\(n.prod\)) dan jarak (\(distance\)) sama dengan 0, waktu pengiriman (\(delTime\)) diperkirakan sebesar 2.3412 unit. Namun, dalam konteks praktis, nilai intersep ini mungkin tidak memiliki makna yang signifikan karena nilai nol untuk kedua variabel prediktor mungkin tidak relevan atau mungkin tidak mungkin dalam konteks yang sesungguhnya.
+
+- **Koefisien untuk \(n.prod\)**: Koefisien untuk \(n.prod\) (\(b_1\)) adalah 1.6159. Ini menunjukkan bahwa jika jumlah produk (\(n.prod\)) meningkat sebesar 1 unit dan jarak (\(distance\)) tetap, waktu pengiriman (\(delTime\)) diperkirakan akan meningkat sekitar 1.6159 unit. 
+
+- **Koefisien untuk \(distance\)**: Koefisien untuk \(distance\) (\(b_2\)) adalah 0.0144. Ini menunjukkan bahwa jika jarak (\(distance\)) meningkat sebesar 1 unit dan jumlah produk (\(n.prod\)) tetap, waktu pengiriman (\(delTime\)) diperkirakan akan meningkat sekitar 0.0144 unit.
+
+- **Kualitas model**: Multiple \(R^2\) adalah 0.9596, yang menunjukkan bahwa model dapat menjelaskan sekitar 95.96% variabilitas dalam waktu pengiriman (\(delTime\)) dengan menggunakan jumlah produk (\(n.prod\)) dan jarak (\(distance\)) sebagai prediktor. Adjusted \(R^2\) mengoreksi \(R^2\) untuk jumlah variabel independen dalam model, dan nilainya adalah 0.9559, yang masih tinggi. F-statistic menunjukkan bahwa model secara keseluruhan signifikan, dengan p-value yang sangat rendah.
+
+
+```{r}
+# Prediksi
+newdata = data.frame(n.prod=30, distance=80)
+predict(mod.reg, newdata=newdata)
+```
+
+Dari hasil prediksi menggunakan model regresi yang telah dibangun, diperoleh prediksi waktu pengiriman (\(delTime\)) untuk data baru dengan jumlah produk (\(n.prod\)) sebesar 30 dan jarak (\(distance\)) sebesar 80 adalah sekitar 51.97 unit waktu. Ini berarti berdasarkan model, jika terdapat 30 produk yang harus dikirimkan dengan jarak 80, diperkirakan waktu pengirimannya akan sekitar 51.97 unit waktu.
+
+### Membuat plot persamaan regresi dugaan dan titik-titik pengamatan
+```{r}
+library(scatterplot3d)
+plot3d <- scatterplot3d(n.prod, distance, delTime, angle=55, scale.y=, pch=16, color="green", main="Regression Plane")
+plot3d$plane3d(mod.reg, lty.box="solid", col="blue")
+```
+
+Persamaan regresi dugaan berikut berupa bidang:
+
+\[
+\hat{Y} = 2.3412 + 1.6159X_1 + 0.0144X_2
+\]
+
+# 2. Cek asumsi-asumsi dalam analisis regresi berganda
+### 1) Asumsi Linearitas
+```{r}
+library(GGally)
+
+ggpairs(data=data.frame(n.prod, distance, delTime))
+```
+
+### 2) Asumsi Nonmultikolinearitas
+```{r}
+library(car)
+
+vif(mod.reg)
+```
+
+### 3) Asumsi Normalitas
+```{r}
+qqnorm(resid(mod.reg))
+plot(mod.reg,2, main="Uji Normalitas")
+```
+
+Plot Normal Q-Q memperlihatkan bahwa titik-titik menyebar di sekitar garis
+diagonal dan mengikuti arah garis diagonal sehingga asumsi normalitas terpenuhi.
+
+### 4) Asumsi Homogenitas
+```{r}
+library(MASS)
+plot(fitted(mod.reg),stdres(mod.reg),xlab="Fitted values",ylab="Standardized residuals",main="Uji Homogenitas")
+abline(h=0,lty=2,col="red")
+```
+
+Plot fitted values vs standardized residuals di atas menunjukkan bahwa tidak ada pola
+yang kuat pada residual dan titik-titik menyebar secara acak di atas dan di bawah sumbu
+𝑌=0 (dalam pita horizontal) sehingga asumsi homogenitas variansi terpenuhi.
+
+### 5) Asumsi Independen
+```{r}
+plot(fitted(mod.reg),resid(mod.reg),xlab="Nilai dugaan",ylab="Residual",main="Uji Independensi")
+abline(h=0,lty=2,col="red")
+```
+
+Plot uji independensi di atas menunjukkan bahwa titik-titik menyebar di sekitar garis
+horizontal 0, maka galat saling independen. Dapat disimpulkan bahwa asumsi independen
+terpenuhi.
+
+# 3. Inferensi bagi parameter (pengujian hipotesis atau interval kepercayaan)
+```{r}
+# Uji hipotesis bagi signifikansi regresi linear ganda
+anova_delivery <- anova(mod.reg)
+anova_delivery
+
+qf(0.95,df1=2,df2=22)
+
+summary(mod.reg)
+```
+
+# 4. Pilih model regresi terbaik dengan salah satu metode seleksi
+```{r}
+fit.stat <- function(model, data, MSE.all) {
+mod.fit <- lm(formula=model, data=data)
+sum.fit <- summary(mod.fit)
+n <- length(mod.fit$residuals)
+aic.mod <- AIC(object = mod.fit, k = 2)
+sbc.mod <- AIC(object = mod.fit, k = log(n))
+sse <- anova(mod.fit)$"Sum Sq"[length(anova(mod.fit)$"Sum Sq")]
+p <- length(mod.fit$coefficients)
+Cp <- sse/MSE.all - (n-2*p)
+press <- sum(mod.fit$residuals^2/(1-lm.influence(mod.fit)$hat)^2)
+data.frame(p=p, SSE=sse, Rsq=sum.fit$r.squared, AdjRsq=sum.fit$adj.r.squared,
+           AIC.stat=aic.mod, SBC.stat=sbc.mod, PRESS=press, Cp=Cp)
+}
+```
+```{r}
+dat <- read.csv(file="C:/Users/LENOVO/OneDrive/Documents/Learning R/Semester 2/delivery.csv", head=T)
+str(dat)
+
+# Menghitung MSE.all
+MSE.all <- mean((resid(mod.reg))^2)
+
+# Model dengan 2 variabel prediktor
+mod2.12 <- lm(log(delTime)~n.prod+distance, data=dat)
+fit.mod2.12 <- fit.stat(mod2.12, data=dat, MSE.all = MSE.all)
+fit.mod2.12
+
+# Model dengan 1 variabel prediktor
+mod1.1 <- lm(log(delTime)~n.prod, data=dat)
+fit.mod1.1 <- fit.stat(mod1.1, data=dat, MSE.all = MSE.all)
+fit.mod1.1
+
+mod1.2 <- lm(log(delTime)~n.prod, data=dat)
+fit.mod1.2 <- fit.stat(mod1.2, data=dat, MSE.all = MSE.all)
+fit.mod1.2
+
+# Model dengan 1 variabel prediktor
+mod0 <- lm(log(delTime)~1,data= dat)
+fit.mod0 <- fit.stat(mod0, data = dat, MSE.all = MSE.all)
+fit.mod0
+
+# Hasil
+result<-rbind(fit.mod0,fit.mod1.1,fit.mod1.2,fit.mod2.12)
+x.var <- c("Tanpa","X1","X2","X1X2")
+cbind(x.var,result)
+
+```
+
+#### Model regresi terbaik
+```{r}
+mod2.12 <- lm(log(delTime)~n.prod+distance, data= dat)
+summary(mod2.12)
+```
+
+Persamaan regresi dugaan:
+
+\[ \text{log(delTime)} = \beta_0 + \beta_1 \times \text{n.prod} + \beta_2 \times \text{distance} \]
+
+Interpretasi dari hasil analisis regresi untuk model dengan dua variabel prediktor (n.prod dan distance) yang memprediksi logaritma waktu pengiriman (\text{delTime}) adalah sebagai berikut:
+
+1. Nilai $\beta_0$:
+
+- Nilai intercept (konstanta) $\beta_0$ memiliki nilai sebesar 2.294 dengan standar error sekitar 0.057. Tanda positif pada koefisien menunjukkan bahwa ketika semua variabel independen (n.prod dan distance) bernilai 0 atau tidak mengalami perubahan, maka nilai logaritma waktu pengiriman (\text{delTime}) diperkirakan sekitar 2.294.
+
+2. Koefisien regresi untuk variabel n.prod:
+
+- Nilai koefisien untuk n.prod adalah sebesar 0.051 dengan standar error sekitar 0.009. Nilai t-statistic sebesar 5.767 menunjukkan bahwa koefisien ini signifikan secara statistik pada tingkat signifikansi 5%. 
+
+- Koefisien ini menunjukkan bahwa dengan setiap peningkatan satu unit dalam jumlah produk (n.prod), logaritma waktu pengiriman (\text{delTime}) diperkirakan akan meningkat sebesar 0.051, dengan menjaga variabel distance konstan.
+
+3. Koefisien regresi untuk variabel distance:
+- Nilai koefisien untuk distance adalah sebesar 0.001 dengan standar error sekitar 0.0002. Nilai t-statistic sebesar 2.795 menunjukkan bahwa koefisien ini juga signifikan secara statistik pada tingkat signifikansi 5%. 
+
+- Koefisien ini menunjukkan bahwa dengan setiap peningkatan satu unit dalam jarak (distance), logaritma waktu pengiriman (\text{delTime}) diperkirakan akan meningkat sebesar 0.001, dengan menjaga variabel n.prod konstan.
+
+Dari hasil analisis tersebut, dapat disimpulkan bahwa kedua variabel prediktor, yaitu jumlah produk (n.prod) dan jarak (distance), berkontribusi secara signifikan terhadap prediksi logaritma waktu pengiriman (\text{delTime}). Semakin tinggi jumlah produk dan jarak, semakin lama waktu pengiriman yang diperkirakan, dengan memperhitungkan pengaruh kedua variabel tersebut secara bersama-sama.

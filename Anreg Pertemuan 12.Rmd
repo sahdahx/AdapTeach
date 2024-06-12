@@ -1,0 +1,153 @@
+---
+title: "Tugas Pertemuan 12: Pemilihan Model Regresi Terbaik"
+author: Sahda Huwaidah Estiningtyas
+date: "`16 Mei 2024`"
+output: word_document
+---
+
+### **Library**
+```{r}
+library(tidyverse) #package untuk manipulasi data dan visualisasi data 
+library(modelr) #package untuk menghitung performa model regresi
+library(broom) # package untuk membangun data frame berisi ukuran kebaikan model regresi
+library (leaps)
+library(MASS)
+```
+
+# Membaca Data mtcars.xlsx
+```{r}
+library(readxl)
+data<- read_xlsx("C:/Users/LENOVO/OneDrive/Documents/UNY/Semester 2/mtcars.xlsx")
+head(data)
+str(data)
+```
+
+# Introduction Pemilihan Model Regresi Terbaik
+```{r}
+model1<-lm(mpg~cyl,data=data) 
+model2<-lm(mpg~disp,data=data) 
+model3<-lm(mpg~hp,data=data) 
+model4<-lm(mpg~drat,data=data) 
+model5<-lm(mpg~wt,data=data) 
+model6<-lm(mpg~qsec,data=data) 
+model7<-lm(mpg~gear,data=data) 
+model8<-lm(mpg~carb,data=data) 
+model255<-lm(mpg~cyl+disp+hp+drat+wt+qsec+gear+carb,data=data) 
+```
+
+Berdasarkan beberapa kemungkinan model di atas, pemilihan model terbaik dapat dilakukan dengan memperhatikan nilai-nilai \(R^2\), RMSE, dan MAE. Model regresi yang terbaik adalah model regresi yang mempunyai nilai \(R^2\) yang tinggi. Nilai \(R^2\) yang tinggi berarti model regresi semakin dapat menjelaskan keragaman data. Model regresi yang terbaik adalah model regresi dengan nilai RMSE dan MAE yang rendah.
+
+## Menghitung nilai R2, RMSE, dan MAPE
+```{r}
+m1<-data.frame(R2 = rsquare(model1, data = data), RMSE = rmse(model1, data = data),MAE = mae(model1, data = data))
+m2<-data.frame(R2 = rsquare(model2, data = data), RMSE = rmse(model2, data = data),MAE = mae(model2, data = data))
+m3<-data.frame(R2 = rsquare(model3, data = data), RMSE = rmse(model3, data = data),MAE = mae(model3, data = data))
+m4<-data.frame(R2 = rsquare(model4, data = data), RMSE = rmse(model4, data = data),MAE = mae(model4, data = data))
+m5<-data.frame(R2 = rsquare(model5, data = data), RMSE = rmse(model5, data = data),MAE = mae(model5, data = data))
+m6<-data.frame(R2 = rsquare(model6, data = data), RMSE = rmse(model6, data = data),MAE = mae(model6, data = data))
+m7<-data.frame(R2 = rsquare(model7, data = data), RMSE =  rmse(model7, data = data),MAE = mae(model7,data = data))
+m8<-data.frame(R2 = rsquare(model8, data = data), RMSE =  rmse(model8, data = data),MAE = mae(model8,data = data))
+m255<-data.frame(R2 = rsquare(model255, data = data), RMSE =  rmse(model255, data = data),MAE = mae(model255,data = data))
+
+datam<-rbind(m1,m2,m3,m4,m5,m6,m7,m8,m255)
+datam<-as.data.frame(datam)
+
+list_model<-rbind("model1","model2","model3","model4","model5","model6","model7","model8","model255")
+
+gabungan<-cbind(list_model,datam)
+gabungan
+```
+
+Berdasarkan hasil analisis:
+
+- Model terbaik adalah model255 (\texttt{mpg \textasciitilde\ cyl + disp + hp + drat + wt + qsec + gear + carb}) dengan \(R^2 = 0.8595764\), RMSE = 2.222918, dan MAE = 1.732645.
+
+- Model ini memiliki nilai \(R^2\) tertinggi dan kesalahan prediksi (RMSE dan MAE) terendah, sehingga memberikan prediksi yang paling akurat.
+
+## Menghitung Kriteria R2 adjusted, AIC, dan BIC
+```{r}
+a1<-glance(model1) %>% dplyr::select(adj.r.squared,  AIC, BIC)
+
+a2<-glance(model2) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a3<-glance(model3) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a4<-glance(model3) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a5<-glance(model3) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a6<-glance(model3) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a7<-glance(model7) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a8<-glance(model3) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+a255<-glance(model3) %>% dplyr::select(adj.r.squared, AIC, BIC)
+
+dataa<-rbind(a1,a2,a3,a4,a5,a6,a7,a8,a255)
+dataa<-as.data.frame(dataa)
+
+list_modela<-rbind("model1","model2","model3","model4","model5","model6","model7","model8","model255")
+
+gabungana<-cbind(list_modela,dataa)
+gabungana
+```
+
+## Perhitungan Manual RMSE, MAE, R2, R2 Adjusted, Cp Mallow
+```{r}
+anova(model1)
+JKG1<-308.33
+JKT1<-308.33+817.71
+KTG1<-10.28
+n<-length(data$mpg)
+
+RMSE1 <- sqrt(mean((model1$residuals)^2))
+RMSE1
+
+MAE1 <- mean(abs(model1$residuals))
+MAE1
+
+Rsquare1<-(1-JKG1/JKT1)
+Rsquare1
+
+AdjRSquare1<-1-((n-1)/JKT1)*KTG1 #n adalahbanyaknya data
+AdjRSquare1
+
+anova(model255)
+
+KTG255<-6.87
+Cp1 <- JKG1/KTG255 + 2*(1+1)-20 #Cp untuk model 1 tapi aku masih bingung yg ini
+Cp1
+
+```
+
+# Penerapan Model Regresi
+## Pembagian Training Testing Data
+```{r}
+set.seed(100) # setting seed to reproduce results of random sampling
+trainingRowIndex <- sample(1:nrow(data), 0.8*nrow(data)) # row indices for training data
+trainingData <- data[trainingRowIndex, ] # model training data
+testData <- data[-trainingRowIndex, ] # test data
+```
+
+## Model Regresi (data training)
+```{r}
+lmMod <- lm(mpg~cyl+disp+hp+drat+wt+qsec+gear+carb, data=trainingData) # build the model
+summary(lmMod)
+```
+
+## Prediksi Data Test dengan Model Regresi
+```{r}
+distPred <- predict(lmMod, testData) # predict fat
+
+actuals_preds <- data.frame(cbind(actuals=testData$mpg,  predicteds=distPred)) # make actuals_predicteds dataframe.
+correlation_accuracy <- cor(actuals_preds)
+head(actuals_preds)
+
+min_max_accuracy <- mean(apply(actuals_preds, 1, min) / apply(actuals_preds, 1, max))#MinMaxAcuracy
+
+mape <- mean(abs((actuals_preds$predicteds - actuals_preds$actuals))/actuals_preds$actuals) # Mean Absolute Percentage Deviation (MAPE)
+
+```
+
+Pemilihan model terbaik dapat diulang dengan memodelkan ke-7 kemungkinan model yang dapat dibentuk kemudian dibandingkan nilai-nilai kriteria kebaikan model.

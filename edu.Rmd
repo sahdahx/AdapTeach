@@ -1,0 +1,116 @@
+---
+title: "Regresi Linear Sederhana"
+author: "Sahda Huwaidah Estiningtyas"
+output: html_document
+date: '2024-04-18'
+---
+
+# Membaca Data
+```{r}
+# Membaca data
+education <- read.table("C:/Users/LENOVO/OneDrive/Documents/UNY/Semester 2/edu.txt", header = TRUE)
+
+# Menampilkan struktur data
+str(education)
+
+# Memeriksa data
+head(education)
+```
+
+```{r}
+# Memeriksa panjang data
+x <- c(5,10,15,3,8,12,4,9,14,6,11,16)
+y <- c(40000,50000,60000,35000,48000,55000,38000,52000,58000,42000,53000,62000)
+panjang_x <- length(x)
+panjang_y <- length(y)
+print(panjang_x)
+print(panjang_y)
+
+```
+
+# Eksplorasi Data
+```{r}
+summary(education)
+
+plot(education$YearsOfExperience, education$Salary, xlab="Years Of Experience", ylab="Salary",pch=16)
+```
+
+# Persamaan Regresi
+```{r}
+modela<-lm(Salary~YearsOfExperience,data=education)
+summary(modela)
+```
+Persamaan regresi yang diberikan menunjukkan hubungan antara gaji (\( \text{Salary} \)) dengan pengalaman (\( \text{YearsOfExperience} \)). Hasil analisis menunjukkan bahwa intercept (\( \beta_0 \)) memiliki nilai sekitar \( \$30309.13 \), yang mengindikasikan bahwa bagi individu dengan pengalaman nol tahun, gaji yang diharapkan adalah sekitar \( \$30309.13 \). Sementara itu, nilai slope (\( \beta_1 \)) sebesar \( 2029.12 \) menunjukkan bahwa setiap tambahan satu tahun dalam pengalaman dikaitkan dengan peningkatan rata-rata sebesar \( \$2029.12 \) dalam gaji. Dengan demikian, model ini menunjukkan bahwa pengalaman memiliki pengaruh signifikan terhadap gaji, dengan peningkatan pengalaman yang berkelanjutan berpotensi meningkatkan gaji secara substansial. Hasil analisis juga menunjukkan bahwa model memiliki nilai \( R^2 \) sebesar 0.9787, menunjukkan bahwa sekitar 97.87% variabilitas dalam gaji dapat dijelaskan oleh variabel independen (pengalaman). Nilai p-value yang sangat kecil (1.09e-09) menegaskan signifikansi statistik dari hubungan antara pengalaman dan gaji. Oleh karena itu, dapat disimpulkan bahwa pengalaman memiliki pengaruh yang signifikan terhadap gaji, dan model regresi ini dapat digunakan untuk memprediksi gaji berdasarkan pengalaman dengan tingkat kepercayaan yang tinggi.
+
+# Asumsi 1: Rata-rata galat diasumsikan bernilai nol
+```{r}
+plot(education$YearsOfExperience, modela$residuals, 
+ xlab="Years Of Experience (X)", ylab="Residuals", 
+ main="Plot Uji Asumsi Rata-rata Galat bernilai nol")
+```
+
+# Asumsi 2: Galat saling bebas
+```{r}
+c <- (1:12)
+education <- cbind(education, c)
+head(education)
+
+plot(education$c, modela$residuals,
+ xlab = "Amatan", ylab = "Residuals", type = "l",
+ main = "Plot Uji Asumsi Galat Saling Bebas")
+
+plot(education$c,modela$residuals,
+ xlab = "Amatan",ylab="Residuals",
+ main = "Plot Uji Asumsi Galat Saling Bebas")
+```
+
+# Asumsi 3: Galat berdistribusi normal
+```{r}
+c <- (1:12)
+# Tabel ANOVA
+ytopi <- modela$fitted.values
+ei <- modela$residuals
+eiterurut <- sort(modela$residuals)
+anova(modela)
+
+hi<-sqrt(1873953)*qnorm((c-0.375)/(12+0.25))
+Hi<-cbind(education,ytopi,ei,eiterurut,hi)
+head(Hi)
+
+plot(hi,eiterurut,
+xlab="hi",ylab="eiterurut",
+main="Plot Uji Galat Berdistribusi Normal")
+
+# Fungsi qqnorm dan qqline 
+qqnorm(modela$residuals, ylab = "raw residuals")
+qqline(modela$residuals)
+
+# Histogram Uji Galat Berdistribusi Normal
+hist(modela$residuals, main="Histogram Uji Galat Berdistribusi Normal")
+
+# Histogram untuk interval data = 12
+hist(modela$residuals, 12, main="Histogram Uji Galat Berdistribusi Normal untuk 
+Interval Data = 167")
+
+# Boxplot
+boxplot(modela$residuals, main="Boxplot")
+```
+
+# Asumsi 4: Ragam galat diasumsikan konstan
+```{r}
+ytopi<-modela$fitted.values
+ei<-modela$residuals
+plot(ytopi,ei,
+ xlab="fitted values", ylab="residuals",
+ main="Plot Uji Ragam Galat Konstan")
+```
+
+# Asumsi 5: Liearitas antara X dan Y
+```{r}
+plot(education$YearsOfExperience, education$Salary, main="Plot Data")
+```
+
+# Asumsi 6: Tidak ada outlier
+```{r}
+plot(education$YearsOfExperience, education$Salary, main="Plot Data")
+```

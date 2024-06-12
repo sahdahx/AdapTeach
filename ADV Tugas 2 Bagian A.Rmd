@@ -1,0 +1,243 @@
+---
+title: "Analisis Regresi Linier Ganda (Tugas 2 Bagian A)"
+author: "Sahda Huwaidah Estiningtyas"
+date: "`27 Maret 2024`"
+output: html_document
+---
+
+# Membaca data
+```{r}
+rmr <- read.table(file="C:/Users/LENOVO/OneDrive/Documents/Learning R/Semester 2/rmr.csv", header=TRUE, sep=",")
+head(rmr)
+```
+
+## 1. Membuat plot metabolic rate vs body weight dan berikan interpretasi
+```{r}
+attach(rmr)
+plot(body.weight, metabolic.rate)
+```
+
+Diinterpretasikan bahwa plot pencar menunjukkan adanya hubungan positif linier antara variabel berat badan (\( \text{body.weight} \)) sebagai variabel independen (x) dan variabel laju metabolisme (\( \text{metabolic.rate} \)) sebagai variabel dependen (y). Hal ini dapat dilihat dari pola grafik dimana semakin besar nilai berat badan, semakin besar juga nilai laju metabolisme.
+
+## 2. Menentukan variabel independen dan variabel dependen
+- Variabel independen (x): berat badan (\( \text{body.weight} \))
+- Variabel dependen (y): laju metabolisme (\( \text{metabolic.rate} \))
+
+## 3. Melakukan pengepasan model regresi linear dan memberikan persamaan regresi dugaan dan interpretasinya
+#### Perhitungan secara manual di program R
+```{r}
+sum.x <- sum(body.weight)
+sum.x
+
+sum.x2 <- sum(body.weight^2)
+sum.x2
+
+sum.y <- sum(metabolic.rate)
+sum.y
+
+sum.xy <- sum(body.weight*metabolic.rate)
+sum.xy
+
+n <- nrow(rmr)
+n
+
+b1 <- (n*sum.xy - sum.x*sum.y)/(n*sum.x2 - (sum.x)^2)
+b1
+
+b0 <- (sum.y - b1*sum.x)/n
+b0
+```
+
+
+#### Perhitungan menggunakan fungsi lm di program R
+```{r}
+model <- lm(metabolic.rate~body.weight)
+model
+```
+Persamaan regresi dugaan ŷ = 811.2267 + 7.059528x menggunakan metode manual atau fungsi `lm` dalam program R pada dataset rmr ditemukan, sehingga dapat diinterpretasikan koefisien regresi sebagai berikut:
+
+- Makna dari \( \hat{\beta}_1 \)= 7.059528  adalah bahwa setiap peningkatan satu kilogram dalam berat badan akan menyebabkan peningkatan laju metabolisme tubuh sebesar 7.059528% per jam.
+- Makna dari \( \hat{\beta}_0 \)= 811.2267 adalah bahwa jika berat badan adalah nol kilogram, maka laju metabolisme tubuh diprediksi akan sebesar 811.2267% per jam.
+
+## 4. Memprediksi metabolic rate bagi body weight sebesar 70kg
+#### Perhitungan menggunakan fungsi predict di program R
+```{r}
+model_rmr <- lm(metabolic.rate~body.weight)
+prediksi <- predict(model_rmr, data.frame(body.weight=c(70)))
+prediksi
+```
+
+#### Perhitungan secara manual
+𝑥𝑖 = 70 → 𝑦̂𝑖 = 811.2267 + 7.059528𝑥𝑖
+
+𝑦̂𝑖 = 811.2267 + 7.059528(70)
+
+𝑦̂𝑖 = 811.2267 + 494.16696
+
+𝑦̂𝑖 = 1305.39366 ≈ 1305.394
+
+Berdasarkan perhitungan di atas, prediksi laju metabolisme tubuh (\( \text{metabolic.rate} \)) bagi berat badan (\( \text{metabolic.rate} \)) sebesar 70
+kg adalah 1305.394 %/ℎ.
+
+## 5. Menentukan apakah terdapat hubungan linear positif antara metabolic rate dan body weight
+### Hipotesis
+- H0: p = 0 (Tidak ada hubungan linear antara berat badan (body.weight) dan laju metabolisme (metabolic.rate))
+- H1: p ≠ 0  (Ada hubungan linear antara berat badan (body.weight) dan laju metabolisme (metabolic.rate))
+
+### Taraf signifikansi
+\( α = 0.05 \)
+
+### Statistik uji
+\( t = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}} \)
+
+### Kriteria keputusan
+#### Menghitung t-tabel
+```{r}
+ttabel <- qt(0.975, 42)
+ttabel
+```
+\( t_{0.25}(42) = 2.018082 \)
+
+- H0 ditolak jika |t hitung| > t tabel = 2.018082, atau
+- H0 ditolak jika p-value < 0.05
+
+### Hitungan
+#### Perhitungan manual di program R
+```{r}
+# Menentukan derajat kebebasan (df)
+df <- n-2
+df
+
+# Menentukan koefisien korelasi (R)
+R <- cor(body.weight, metabolic.rate)
+R
+
+# Menentukan t-hitung
+t_hitung <- (R*sqrt(n-2))/sqrt(1-R^2)
+t_hitung
+
+# Menentukan p-value
+p_value <- 2 * pt(-abs(t_hitung), df)
+p_value
+```
+
+#### Perhitungan menggunakan fungsi cor.test di program R
+```{r}
+cor.test(body.weight, metabolic.rate)
+```
+
+#### Perhitungan secara manual
+\( t = \frac{r\sqrt{n - 2}}{\sqrt{1 - r^2}} \)
+
+\( t = \frac{0.7442379\sqrt{44 - 2}}{\sqrt{1 - 0.55389^2}} \)
+
+\( t = \frac{0.7442379\sqrt{42}}{\sqrt{0.44611}} \)
+
+\( t = 7.2213 \)
+
+Berdasarkan perhitungan di atas diperoleh nilai 𝑡 = 7.2213 dan 𝑝 − 𝑣𝑎𝑙𝑢𝑒 =
+7.02538𝑒 − 09 ≈ 0.00000000702538
+
+#### Kesimpulan
+Dikarenakan nilai \( t \) adalah 7.2213, maka \( |t| = 7.2213 \) lebih besar dari 2.018082 (atau 𝑝 − 𝑣𝑎𝑙𝑢𝑒 = 0.00000000702538 kurang dari 0.05), sehingga hipotesis nol (\( H_0 \)) ditolak. Selain itu, nilai koefisien korelasi sampel \( R \) adalah 0.7442379, menunjukkan adanya hubungan linear positif yang moderat antara berat badan (\( \text{body.weight} \)) dan laju metabolisme (\( \text{metabolic.rate} \)). Dengan demikian, pada tingkat signifikansi 0.05, dapat disimpulkan bahwa terdapat hubungan linear positif antara kedua variabel tersebut.
+
+## 6. Membuat interval kepercayaan 95% bagi slope dan memberikan interpretasi
+#### Perhitungan secara manual di program R
+
+``` {r}
+# Menghitung b1 
+b1 <- (n*sum.xy - sum.x*sum.y)/(n*sum.x2 - (sum.x)^2)
+b1
+
+# Menghitung b0
+b0 <- (sum.y - b1*sum.x)/n
+b0
+
+# menghitung ttabel
+ttabel <- qt(0.975, 42)
+ttabel
+
+# menghitung sb1
+Sxx <- sum((body.weight-mean(body.weight))^2)
+Sxx
+
+Syy <- sum((metabolic.rate-mean(metabolic.rate))^2)
+Syy
+
+Sxy <- sum((body.weight-mean(body.weight))*(metabolic.rate-mean(metabolic.rate)))
+Sxy
+
+SST <- Syy
+SST
+
+SSR <- b1*(Sxy)
+SSR
+
+SSE <- SST-SSR
+SSE
+
+MSR <- SSR/1
+MSR
+
+MSE <- SSE/(n-2)
+MSE
+
+sb1.sqr <- MSE/Sxx
+sb1 <- sqrt(sb1.sqr)
+sb1
+
+# menghitung interval batas bawah
+batas_bawah = b1-(ttabel*sb1)
+batas_bawah
+
+# menghitung interval batas atas
+batas_atas = b1+(ttabel*sb1)
+batas_atas
+```
+#### Perhitungan menggunakan fungsi confint di program R
+```{r}
+confint(model, level=0.95)
+```
+#### Perhitungan secara manual
+\[ \hat{\beta}_1 - t_{\alpha/2}(n-2) \cdot s_{\hat{\beta}_1} \leq \beta_1 \leq \hat{\beta}_1 + t_{\alpha/2}(n-2) \cdot s_{\hat{\beta}_1} \]
+
+\[ 7.059528 - 2.018082(0.9775978) \leq \beta_1 \leq 7.059528 + 2.018082(0.9775978) \]
+
+\[ 7.059528 - 1.9728725234196 \leq \beta_1 \leq 7.059528 + 1.9728725234196 \]
+
+\[ 5.0866554765804 \leq \beta_1 \leq 9.0324005234196 \]
+
+Berdasarkan perhitungan secara manual maupun menggunakan fungsi di program R, diperoleh interval kepercayaan 95% bagi slope (\( \beta_1 \)) yaitu sebagai berikut:
+
+\( 5.0866554765804 \leq \beta_1 \leq 9.0324005234196 \)
+
+Untuk interval kepercayaan 95% bagi slope (\( \beta_1 \)) tersebut, intervalnya bernilai positif sehingga dapat disimpulkan 95% yakin bahwa ada hubungan linear positif antara berat badan (\( \text{body.weight} \)) dan laju metabolisme (\( \text{metabolic.rate} \)).
+
+## 7. Menentukan koefisien korelasi dan koefisien determiasi antara metabolic rate dan boy weight dan memberikan interpretasi
+### Koefisien Determinasi (R²)
+``` {r}
+R2 <- SSR/SST
+R2
+```
+Berdasarkan perhitungan di atas, diperoleh nilai dari koefisien determinasi (𝑅²) = 0.55389 berarti 55% keragaman dalam data dijelaskan oleh model regresi.
+
+### Koefisien Korelasi (R)
+``` {r}
+R <- sqrt(R2)
+R
+```
+Berdasarkan perhitungan di atas, diperoleh nilai koefisien korelasi sampel adalah 
+0.7442379, yang bermakna ada hubungan linear positif yang moderat.
+
+## 8. Melakukan diagnostik regresi terkait dengan asumsi-asumsi dalam model regresi linear sederhana
+#### Plot nilai dugaan vs residual dan plot X vs residual
+```{r}
+model_rmr <- lm(metabolic.rate~body.weight)
+par(mfrow=c(1,2))
+plot(fitted(model_rmr), resid(model_rmr), xlab="Nilai dugaan", ylab="Residual")
+abline(h=0,col="blue",lty=2)
+plot(body.weight, resid(model_rmr), xlab="X", ylab="Residual")
+abline(h=0,col="red",lty=2)
+```
+
+Dalam model regresi linear sederhana, plot nilai prediksi vs residu dan plot variabel independen x vs residu memiliki pola yang serupa. Titik-titik tersebar secara acak di sekitar garis horizontal nol, menunjukkan bahwa kesalahan tidak berkorelasi satu sama lain. Plot residu menunjukkan penyebaran yang konsisten, menandakan bahwa variansinya konstan untuk setiap nilai x.

@@ -1,0 +1,65 @@
+time,dive.type,age.group
+39,cave,20-30
+38,cave,20-30
+41,cave,20-30
+39,cave,20-30
+41,cave,20-30
+42,cave,20-30
+40,cave,20-30
+40,cave,20-30
+42,open.water,20-30
+40,open.water,20-30
+40,open.water,20-30
+39,open.water,20-30
+37,open.water,20-30
+45,open.water,20-30
+36,open.water,20-30
+40,open.water,20-30
+43,cave,30-40
+40,cave,30-40
+38,cave,30-40
+36,cave,30-40
+41,cave,30-40
+46,cave,30-40
+40,cave,30-40
+37,cave,30-40
+45,open.water,30-40
+39,open.water,30-40
+43,open.water,30-40
+43,open.water,30-40
+47,open.water,30-40
+50,open.water,30-40
+46,open.water,30-40
+44,open.water,30-40
+42,cave,40-50
+41,cave,40-50
+50,cave,40-50
+47,cave,40-50
+43,cave,40-50
+38,cave,40-50
+46,cave,40-50
+47,cave,40-50
+37,open.water,40-50
+40,open.water,40-50
+40,open.water,40-50
+38,open.water,40-50
+34,open.water,40-50
+45,open.water,40-50
+34,open.water,40-50
+41,open.water,40-50
+38,cave,≥ 50
+34,cave,≥ 50
+35,cave,≥ 50
+36,cave,≥ 50
+40,cave,≥ 50
+38,cave,≥ 50
+42,cave,≥ 50
+38,cave,≥ 50
+33,open.water,≥ 50
+37,open.water,≥ 50
+42,open.water,≥ 50
+38,open.water,≥ 50
+30,open.water,≥ 50
+39,open.water,≥ 50
+41,open.water,≥ 50
+39,open.water,≥ 50

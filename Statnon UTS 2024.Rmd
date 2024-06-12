@@ -1,0 +1,97 @@
+---
+title: "Statistika Nonparametrik UTS 2024"
+author: "Sahda Huwaidah Estiningtyas"
+output: html_document
+date: '2024-04-26'
+---
+
+## Kasus 1
+```{r}
+# Jumlah sampel
+n <- 15
+
+# Jumlah keberhasilan (jumlah mahasiswa yang mengalami masalah psikologis)
+x <- 9
+
+# Proporsi keberhasilan (proporsi mahasiswa yang mengalami masalah psikologis)
+p_hat <- x / n
+
+# Proporsi yang diuji pada hipotesis nol
+p_null <- 0.5
+
+# Hitung nilai z-score
+z_score <- (p_hat - p_null) / sqrt((p_null * (1 - p_null)) / n)
+
+# Hitung p-value
+p_value <- 1 - pnorm(z_score)
+
+# Tampilkan hasil
+cat("Z-score:", z_score, "\n")
+cat("P-value:", p_value, "\n")
+
+# Uji signifikansi dengan tingkat signifikansi α = 0.05
+alpha <- 0.05
+if (p_value < alpha) {
+  cat("Kesimpulan: Menolak hipotesis nol. Lebih dari 50% mahasiswa mengalami masalah psikologis.")
+} else {
+  cat("Kesimpulan: Tidak cukup bukti untuk menolak hipotesis nol. Tidak lebih dari 50% mahasiswa mengalami masalah psikologis.")
+}
+```
+
+# Eksplorasi data
+```{r}
+# Menghitung proporsi
+x <- 9  # jumlah mahasiswa yang mengalami masalah
+n <- 15 # total sampel
+proporsi <- x / n
+proporsi
+
+# Uji Binomial
+p_value <- pbinom(x, n, 0.50, lower.tail = FALSE)
+p_value
+
+```
+
+# Kolmogorov
+```{r}
+# Data
+data <- c(5, 3, 3, 2, 4, 10, 1, 0, 2, 3, 1, 2, 1)
+alpha = 0.05
+
+# Menghitung rata-rata
+mean_value <- mean(data)
+
+# Menghitung simpangan baku
+std_dev <- sd(data)
+
+print(paste("Rata-rata:", mean_value))
+print(paste("Simpangan baku:", std_dev))
+
+library(nortest)
+lillie.test(data)
+```
+
+# Chi Square
+```{r}
+# Data
+df <- data.frame("goreng"=c(17, 57, 12), "kuah"=c(21, 15, 28), row.names=c("pagi", "siang", "malam"))
+df
+alpha = 0.05
+
+chisq.test(df)
+
+```
+
+# chisq 1 sampel
+```{r}
+# Data
+data <- c(29.6, 21.4, 23.5, 17.9, 24.2, 27.8)
+alpha = 0.05
+df = 5
+
+khitabel <- qchisq(0.95, df)
+khitabel
+
+result <- chisq.test(data)
+result
+```

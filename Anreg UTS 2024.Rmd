@@ -1,0 +1,175 @@
+---
+title: " UJIAN TENGAH SEMESTER GENAP 2023/2024 MATA KULIAH ANALISIS REGRESI"
+author: "Sahda Huwaidah Estiningtyas"
+output: html_document
+date: '2024-04-25'
+---
+
+# 1. Gunakan data berat badan (y) dan jumlah konsumsi kalori harian (x)
+### Membuat Data
+```{r}
+# Membuat data frame
+data_1 <- data.frame(
+  x = c(1500, 1800, 2100, 2400, 2700, 1600, 1900, 2200, 2500, 2800),
+  y = c(55, 60, 65, 70, 75, 57, 62, 67, 72, 77))
+
+head(data_1)
+```
+
+**Konsumsi Kalori** sebagai **x**, dan **Berat Badan** sebagai **y**
+
+
+### Eksplorasi Data
+```{r}
+summary(data_1)
+plot(data_1$x, data_1$y, xlab="Konsumsi Kalori", ylab="Berat Badan", pch=10)
+```
+
+## a. Tentukan persamaan regresi dugaan beserta maknanya baik dengan perhitungan notasi sigma dan dengan menggunakan R
+```{r}
+# Menghitung regresi linear
+model1 <- lm(y ~ x, data = data_1)
+model1
+
+summary(model1)
+```
+Persamaan Regresi Dugaan:
+
+\( \hat{y} = \hat{\beta}_0 + \hat{\beta}_1x \)
+
+Makna Koefisien:
+
+- \( \hat{\beta}_0 = 30.06849 \): Ini adalah estimasi nilai y ketika x = 0. Dalam konteks ini, jika konsumsi kalori adalah nol, berat badan diperkirakan akan sekitar 30.06849 kg. Namun, perlu diingat bahwa interpretasi ini mungkin tidak memiliki makna yang nyata karena biasanya konsumsi kalori tidak akan nol.
+
+- \( \hat{\beta}_1 = 0.016712 \): Ini menunjukkan perubahan rata-rata dalam berat badan y untuk setiap peningkatan satu satuan dalam konsumsi kalori x. Dalam hal ini, setiap peningkatan satu unit dalam konsumsi kalori diperkirakan akan meningkatkan berat badan sebesar 0.016712 kg.
+
+## b. Tentukan selang kepercayaan 90% bagi β0 dan β1
+```{r}
+# Menghitung selang kepercayaan 90%
+confint(model1)
+```
+- Selang kepercayaan bagi β0 adalah sekitar 29.38 dan batas atasnya adalah sekitar 30.76.
+
+- Selang kepercayaan bagi β1 adalah sekitar 0.0164 dan batas atasnya adalah sekitar 0.0170.
+
+# 2. Lihat kembali soal nomor 1 dan lakukan pengujian asumsi regresi linier sederhana dengan menggunakan grafik dan pengujian hipotesis serta berikan penjelasan.
+### Grafik Residual
+```{r}
+# Plot residual vs fitted values
+plot(model1, which = 1)
+
+# Plot normal Q-Q plot
+plot(model1, which = 2)
+
+# Plot residual vs leverage
+plot(model1, which = 5)
+```
+
+### Pengujian Hipotesis
+```{r}
+# Uji heteroskedastisitas menggunakan Breusch-Pagan test
+library(lmtest) 
+bptest(model1)
+
+# Uji normalitas residual menggunakan uji Kolmogorov-Smirnov
+shapiro.test(residuals(model1))
+```
+**Uji Breusch-Pagan (Heteroskedastisitas):**
+
+Hasil uji menunjukkan nilai p-value yang sangat kecil (< 0.05), sehingga kita menolak hipotesis nol. Artinya, terdapat bukti yang cukup untuk menyatakan bahwa terdapat heteroskedastisitas dalam model. Hal ini menunjukkan bahwa varian residual tidak konstan dan mungkin bergantung pada nilai prediktor.
+
+**Uji Shapiro-Wilk (Normalitas Residual):**
+
+Hasil uji menunjukkan nilai p-value sekitar 0.004, yang kurang dari tingkat signifikansi 0.05. Oleh karena itu, kita menolak hipotesis nol. Ini menunjukkan bahwa residual tidak terdistribusi secara normal. Hal ini menunjukkan bahwa model mungkin tidak memenuhi asumsi normalitas residual.
+
+# 3. Suatu penelitian dilakukan untuk menyelidiki pengaruh kemampuan konsumsi kalori (X1), jumlah langkah (X2)terhadap prestasi Kadar kolesterol (Y). Data diambil dari 10 wanita berusia 25 tahun. Hasil ANOVA sebagai berikut
+
+```
+Analysis of Variance Table
+Response: Kadar_Kolesterol_y
+ Df Sum Sq Mean Sq F value Pr(>F)
+Konsumsi_Kalori_x1 1 562.85 562.85 6566.591 1.147e-11 ***
+Jumlah_Langkah_x2 1 … … 16.909 0.004504 **
+Residuals 7 0.60 …
+Total … 564.90
+---
+Signif. codes: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+Dan hasil uji t sebagai berikut,
+```
+Call:
+lm(formula = Kadar_Kolesterol_y ~ Konsumsi_Kalori_x1 + Jumlah_Langkah_x2,
+ data = toluca)
+Residuals:
+ Min 1Q Median 3Q Max
+ -0.3 -0.2 0.0 0.1 0.4
+Coefficients:
+ Estimate Std. Error t value
+(Intercept) 124.600000 7.066622 17.632
+Konsumsi_Kalori_x1 -0.001500 0.004641 -0.323
+Jumlah_Langkah_x2 0.011500 0.002797 4.112
+---
+Residual standard error: 0.2928 on 7 degrees of freedom
+Multiple R-squared: 0.9989,
+F-statistic: 3292 on 2 and 7 DF, p-value: 3.905e-11
+```
+
+## a. Lengkapi tabel ANOVA tersebut.
+
+```
+##                  Df    Sum Sq   Mean Sq    F value   Pr(>F)
+
+## Konsumsi_Kalori_x1 1   562.85    562.85    6566.591  1.147e-11 ***
+
+## Jumlah_Langkah_x2  1   1.45      1.45      16.909     0.004504 **
+
+## Residuals          7   0.60      0.0.086
+
+## Total              9   564.90
+```
+
+## b. Tentukan persamaan regresi dugaan.
+
+Persamaan regresi dugaan untuk model regresi linear yang melibatkan dua variabel prediktor adalah:
+
+\[ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon \]
+
+Dari hasil uji t, kita memiliki estimasi koefisien regresi sebagai berikut:
+- \( \hat{\beta}_0 = 124.6 \)
+- \( \hat{\beta}_1 = -0.0015 \)
+- \( \hat{\beta}_2 = 0.0115 \)
+
+Sehingga, persamaan regresi dugaan adalah:
+
+\[ Kadar\_Kolesterol\_y = 124.6 - 0.0015 \times Konsumsi\_Kalori\_x1 + 0.0115 \times Jumlah\_Langkah\_x2 + \epsilon \]
+
+## c. Bila dianggap asumsi-asumsi dalam analisis regresi linear terpenuhi, 
+### i. Lakukan inferensi terhadap β0, β1, β2 dengan melakukan uji hipotesis dengan α = 0.05
+
+- Hipotesis untuk \( \beta_0 \):
+  - \( H_0: \beta_0 = 0 \)
+  - \( H_1: \beta_0 \neq 0 \)
+  
+- Hipotesis untuk \( \beta_1 \):
+  - \( H_0: \beta_1 = 0 \)
+  - \( H_1: \beta_1 \neq 0 \)
+  
+- Hipotesis untuk \( \beta_2 \):
+  - \( H_0: \beta_2 = 0 \)
+  - \( H_1: \beta_2 \neq 0 \)
+
+### ii. Ujilah apakah ada hubungan linear antara pengaruh konsumsi kalori (X1), jumlah langkah (X2) terhadap prestasi Kadar kolesterol (Y)? Gunakan α = 0.05
+
+Dengan nilai p-value yang sangat kecil (\(3.905 \times 10^{-11}\)), kita dapat mengkonfirmasi bahwa ada hubungan linear yang signifikan antara Konsumsi Kalori (\( X_1 \)), Jumlah Langkah (\( X_2 \)), dan Kadar Kolesterol (\( Y \)).
+
+## d. Tentukan koefisien determinasi dan koefisien korelasinya
+**Koefisien Determinasi:**
+
+\(R^2\): 0.9989
+
+**Koefisien Korelasi:**
+
+\( r = \sqrt{R^2} = \sqrt{0.9989} \approx 0.9994 \)
+
+Ini menunjukkan bahwa ada korelasi yang sangat kuat antara variabel independen dan dependen dalam model regresi.
